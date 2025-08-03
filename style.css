@@ -148,7 +148,22 @@ h1 {
 .year-5 .subject:not(.disabled):not(.approved) {
     background-color: var(--color-pastel-5);
 }
+/* Agregar en style.css */
+.year-6 .subject:not(.disabled):not(.approved) {
+    background-color: #E0E0E0;
+    border-left: 4px solid #95a5a6;
+}
 
+.year-6 .semester-header {
+    background-color: #B0BEC5;
+}
+
+/* Destacar requisitos especiales */
+.subject[data-id="practica"],
+.subject[data-id="proyecto-final"] {
+    font-weight: bold;
+    border: 2px solid #2c3e50;
+}
 /* Responsive */
 @media (max-width: 768px) {
     .curriculum-table {
