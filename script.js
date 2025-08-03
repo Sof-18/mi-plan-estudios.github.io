@@ -343,103 +343,70 @@ function checkFifthYearCompletion() {
     
     // Renderizar la tabla
     function renderCurriculum() {
-        tableContainer.innerHTML = '';
+    const container = document.querySelector('.curriculum-columns');
+    container.innerHTML = '';
+
+    curriculumData.forEach(yearData => {
+        // Crear columna para cada año
+        const yearColumn = document.createElement('div');
+        yearColumn.className = `year-column year-${yearData.year}`;
         
-        // Crear encabezados de años
-        curriculumData.forEach(yearData => {
-            const yearHeader = document.createElement('div');
-            yearHeader.className = `year-header year-${yearData.year}`;
-            yearHeader.textContent = yearData.name;
-            tableContainer.appendChild(yearHeader);
+        // Encabezado del año
+        const yearHeader = document.createElement('div');
+        yearHeader.className = 'year-header';
+        yearHeader.textContent = yearData.name;
+        yearColumn.appendChild(yearHeader);
+        
+        // Contenedor para semestres
+        const semesterContainer = document.createElement('div');
+        semesterContainer.className = 'semester-container';
+        
+        yearData.semesters.forEach(semester => {
+            // Encabezado del semestre
+            const semesterHeader = document.createElement('div');
+            semesterHeader.className = 'semester-header';
+            semesterHeader.textContent = semester.name;
+            semesterContainer.appendChild(semesterHeader);
             
-            // Crear semestres y materias
-            yearData.semesters.forEach(semester => {
-                const semesterHeader = document.createElement('div');
-                semesterHeader.className = 'semester-header';
-                semesterHeader.textContent = semester.name;
-                tableContainer.appendChild(semesterHeader);
+            // Materias
+            semester.subjects.forEach(subject => {
+                const subjectEl = document.createElement('div');
+                subjectEl.className = `subject year-${yearData.year}`;
+                subjectEl.dataset.id = subject.id;
                 
-                semester.subjects.forEach(subject => {
-                    const subjectEl = document.createElement('div');
-                    subjectEl.className = `subject year-${yearData.year}`;
-                    subjectEl.dataset.id = subject.id;
-                    
-                    // Verificar si está aprobada
-                    const isApproved = approvedSubjects.includes(subject.id);
-                    if (isApproved) {
-                        subjectEl.classList.add('approved');
-                    }
-                    
-                    // Verificar requisitos
-                    const requirementsMet = subject.requires.every(req => approvedSubjects.includes(req));
-                    if (!requirementsMet && subject.requires.length > 0 && !isApproved) {
-                        subjectEl.classList.add('disabled');
-                        // Dentro de renderCurriculum, en la verificación de requisitos:
-                    const requirementsMet = subject.requires.every(req => {
-                    if (req === 'all-fourth-year') {
-                    return checkFourthYearCompletion(true); // Solo verificación
-                    }
-                    if (req === 'all-fifth-year') {
-                    return checkFifthYearCompletion(true); // Solo verificación
-                    }
+                // Verificar si está aprobada
+                if (approvedSubjects.includes(subject.id)) {
+                    subjectEl.classList.add('approved');
+                }
+                
+                // Verificar requisitos
+                const requirementsMet = subject.requires.every(req => {
+                    if (req === 'all-fourth-year') return checkFourthYearCompletion(true);
+                    if (req === 'all-fifth-year') return checkFifthYearCompletion(true);
                     return approvedSubjects.includes(req);
-                    });
-
-                // Versión modificada de las funciones de verificación para solo lectura
-            function checkFourthYearCompletion(onlyCheck = false) {
-            const fourthYearSubjects = curriculumData
-            .find(year => year.year === 4).semesters
-            .flatMap(semester => semester.subjects.map(subject => subject.id));
-    
-            const allApproved = fourthYearSubjects.every(subjectId => 
-            approvedSubjects.includes(subjectId));
-    
-            if (allApproved && !onlyCheck && !approvedSubjects.includes('all-fourth-year')) {
-            approvedSubjects.push('all-fourth-year');
-            }
-            return allApproved;
-}
-
-        function checkFifthYearCompletion(onlyCheck = false) {
-        const fifthYearSubjects = curriculumData
-        .find(year => year.year === 5).semesters
-        .flatMap(semester => semester.subjects.map(subject => subject.id));
-    
-        const allApproved = fifthYearSubjects.every(subjectId => 
-        approvedSubjects.includes(subjectId));
-    
-        if (allApproved && !onlyCheck && !approvedSubjects.includes('all-fifth-year')) {
-        approvedSubjects.push('all-fifth-year');
-        }
-        return allApproved;
-}
-                    }
-                    
-                    // Marcar si es requisito de otras
-                    const isPrerequisite = curriculumData.some(y => 
-                        y.semesters.some(s => 
-                            s.subjects.some(sub => 
-                                sub.requires.includes(subject.id)
-                            )
-                        )
-                    );
-                    if (isPrerequisite) {
-                        subjectEl.classList.add('prerequisite');
-                    }
-                    
-                    subjectEl.innerHTML = `
-                        <div class="subject-name">${subject.name}</div>
-                        <div class="subject-credits">${subject.credits} créditos</div>
-                    `;
-                    
-                    subjectEl.addEventListener('click', () => toggleApproval(subject.id));
-                    tableContainer.appendChild(subjectEl);
                 });
+                
+                if (!requirementsMet && subject.requires.length > 0 && !approvedSubjects.includes(subject.id)) {
+                    subjectEl.classList.add('disabled');
+                }
+                
+                subjectEl.innerHTML = `
+                    <div class="subject-name">${subject.name}</div>
+                    <div class="subject-credits">${subject.credits} créditos</div>
+                `;
+                
+                subjectEl.addEventListener('click', () => toggleApproval(subject.id));
+                semesterContainer.appendChild(subjectEl);
             });
         });
         
-        updateCompletedCount();
-    }
+        yearColumn.appendChild(semesterContainer);
+        container.appendChild(yearColumn);
+    });
+    
+    updateCompletedCount();
+}
+    
     
     // Alternar aprobación de materia
     function toggleApproval(subjectId) {
