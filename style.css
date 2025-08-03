@@ -57,20 +57,20 @@ h1 {
     color: #2c3e50;
 }
 
-.curriculum-table {
-    .curriculum-columns {
+.curriculum-vertical {
     display: flex;
-    gap: 15px;
-    overflow-x: auto;
-    padding-bottom: 20px;
+    flex-direction: column;
+    gap: 30px;
+    width: 100%;
 }
 
-.year-column {
-    flex: 1;
-    min-width: 200px;
+.year-row {
+    display: flex;
+    flex-direction: column;
     background-color: #f8f9fa;
     border-radius: 8px;
     box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+    overflow: hidden;
 }
 
 .year-header {
@@ -79,14 +79,18 @@ h1 {
     padding: 15px;
     text-align: center;
     font-weight: bold;
-    border-radius: 8px 8px 0 0;
     font-size: 1.2em;
-    position: sticky;
-    top: 0;
 }
 
-.semester-container {
-    padding: 0 10px 10px;
+.semesters-container {
+    display: flex;
+    gap: 20px;
+    padding: 15px;
+}
+
+.semester-column {
+    flex: 1;
+    min-width: 200px;
 }
 
 .semester-header {
@@ -94,16 +98,16 @@ h1 {
     color: white;
     padding: 8px;
     text-align: center;
-    margin: 10px 0 5px;
+    margin-bottom: 10px;
     border-radius: 4px;
     font-size: 0.9em;
 }
 
 .subject {
     background-color: white;
-    padding: 10px;
-    margin-bottom: 8px;
-    border-radius: 5px;
+    padding: 12px;
+    margin-bottom: 10px;
+    border-radius: 6px;
     box-shadow: 0 1px 3px rgba(0,0,0,0.1);
     cursor: pointer;
     transition: all 0.2s;
@@ -111,10 +115,11 @@ h1 {
 
 .subject:hover {
     transform: translateY(-2px);
-    box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+    box-shadow: 0 4px 8px rgba(0,0,0,0.15);
 }
 
-/* Mantén los estilos existentes para .approved, .disabled, etc. */
+/* Mantén los estilos para .approved, .disabled, colores por año, etc. */
+
     display: grid;
     grid-template-columns: repeat(5, 1fr);
     gap: 10px;
