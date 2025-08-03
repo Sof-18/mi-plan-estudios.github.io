@@ -58,43 +58,69 @@ h1 {
 }
 
 .curriculum-table {
+    .curriculum-columns {
+    display: flex;
+    gap: 15px;
+    overflow-x: auto;
+    padding-bottom: 20px;
+}
+
+.year-column {
+    flex: 1;
+    min-width: 200px;
+    background-color: #f8f9fa;
+    border-radius: 8px;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+}
+
+.year-header {
+    background-color: #2c3e50;
+    color: white;
+    padding: 15px;
+    text-align: center;
+    font-weight: bold;
+    border-radius: 8px 8px 0 0;
+    font-size: 1.2em;
+    position: sticky;
+    top: 0;
+}
+
+.semester-container {
+    padding: 0 10px 10px;
+}
+
+.semester-header {
+    background-color: #3498db;
+    color: white;
+    padding: 8px;
+    text-align: center;
+    margin: 10px 0 5px;
+    border-radius: 4px;
+    font-size: 0.9em;
+}
+
+.subject {
+    background-color: white;
+    padding: 10px;
+    margin-bottom: 8px;
+    border-radius: 5px;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+    cursor: pointer;
+    transition: all 0.2s;
+}
+
+.subject:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+}
+
+/* Mantén los estilos existentes para .approved, .disabled, etc. */
     display: grid;
     grid-template-columns: repeat(5, 1fr);
     gap: 10px;
     margin-top: 20px;
 }
 
-.year-header {
-    grid-column: span 1;
-    background-color: var(--color-pastel-1);
-    padding: 15px;
-    text-align: center;
-    font-weight: bold;
-    border-radius: 8px 8px 0 0;
-    font-size: 1.2em;
-    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
-}
-
-.semester-header {
-    grid-column: span 1;
-    background-color: var(--color-pastel-2);
-    padding: 10px;
-    text-align: center;
-    font-weight: bold;
-    border-radius: 4px;
-}
-
-.subject {
-    background-color: white;
-    padding: 12px;
-    margin: 5px 0;
-    border-radius: 6px;
-    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
-    cursor: pointer;
-    transition: all 0.3s;
-    position: relative;
-    overflow: hidden;
-}
 
 .subject.disabled {
     background-color: var(--color-disabled);
@@ -166,12 +192,13 @@ h1 {
 }
 /* Responsive */
 @media (max-width: 768px) {
-    .curriculum-table {
-        grid-template-columns: 1fr;
+    .curriculum-columns {
+        flex-direction: column;
+        gap: 20px;
     }
     
-    .year-header {
-        grid-column: span 1;
-        margin-top: 20px;
+    .year-column {
+        min-width: 100%;
     }
 }
+
