@@ -1,260 +1,162 @@
-/* Estilos generales */
+:root {
+    --color-pastel-1: #FFD6E0; /* Rosa pastel */
+    --color-pastel-2: #C1FBA4; /* Verde pastel */
+    --color-pastel-3: #7BF1A8; /* Verde menta */
+    --color-pastel-4: #FFEFD6; /* Naranja pastel */
+    --color-pastel-5: #D6E3FF; /* Azul pastel */
+    --color-disabled: #e0e0e0; /* Gris para materias bloqueadas */
+    --color-approved: #f0fff0; /* Verde muy claro para aprobadas */
+}
+
 body {
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-    line-height: 1.6;
-    color: #333;
-    background-color: #f5f7fa;
+    background-color: #f9f9f9;
     margin: 0;
-    padding: 0;
+    padding: 20px;
+    color: #333;
 }
 
-header {
-    background-color: #2c3e50;
-    color: white;
-    padding: 20px;
+.container {
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+h1 {
+    color: #2c3e50;
     text-align: center;
     margin-bottom: 30px;
-    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
-}
-
-header h1 {
-    margin: 0;
-    font-size: 2em;
-}
-
-header h1 i {
-    margin-right: 10px;
 }
 
 .controls {
-    margin-top: 20px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+    padding: 15px;
+    background-color: white;
+    border-radius: 8px;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
 }
 
-#toggle-prereqs {
-    background-color: #3498db;
+#reset-btn {
+    background-color: #ff6b6b;
     color: white;
     border: none;
     padding: 8px 15px;
     border-radius: 4px;
     cursor: pointer;
-    font-size: 0.9em;
     transition: background-color 0.3s;
 }
 
-#toggle-prereqs:hover {
-    background-color: #2980b9;
+#reset-btn:hover {
+    background-color: #ff5252;
 }
 
-.legend {
-    display: flex;
-    justify-content: center;
-    flex-wrap: wrap;
-    margin-top: 15px;
-    gap: 15px;
-}
-
-.legend-item {
-    display: flex;
-    align-items: center;
-    font-size: 0.8em;
-}
-
-.color-basic {
-    width: 15px;
-    height: 15px;
-    background-color: #3498db;
-    margin-right: 5px;
-    border-radius: 3px;
-}
-
-.color-math {
-    width: 15px;
-    height: 15px;
-    background-color: #e74c3c;
-    margin-right: 5px;
-    border-radius: 3px;
-}
-
-.color-physics {
-    width: 15px;
-    height: 15px;
-    background-color: #9b59b6;
-    margin-right: 5px;
-    border-radius: 3px;
-}
-
-.color-engineering {
-    width: 15px;
-    height: 15px;
-    background-color: #2ecc71;
-    margin-right: 5px;
-    border-radius: 3px;
-}
-
-.color-elective {
-    width: 15px;
-    height: 15px;
-    background-color: #f39c12;
-    margin-right: 5px;
-    border-radius: 3px;
-}
-
-.color-requirement {
-    width: 15px;
-    height: 15px;
-    background-color: #95a5a6;
-    margin-right: 5px;
-    border-radius: 3px;
-}
-
-.curriculum-container {
-    max-width: 1200px;
-    margin: 0 auto;
-    padding: 0 20px;
-}
-
-.year {
-    margin-bottom: 40px;
-    background-color: white;
-    border-radius: 8px;
-    padding: 20px;
-    box-shadow: 0 2px 10px rgba(0,0,0,0.05);
-}
-
-.year h2 {
+.stats {
+    font-weight: bold;
     color: #2c3e50;
-    border-bottom: 2px solid #ecf0f1;
-    padding-bottom: 10px;
-    margin-top: 0;
 }
 
-.year h2 i {
-    margin-right: 10px;
-    color: #3498db;
+.curriculum-table {
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    gap: 10px;
+    margin-top: 20px;
 }
 
-.semester {
-    margin: 25px 0;
-}
-
-.semester h3 {
-    color: #3498db;
-    margin-bottom: 15px;
+.year-header {
+    grid-column: span 1;
+    background-color: var(--color-pastel-1);
+    padding: 15px;
+    text-align: center;
+    font-weight: bold;
+    border-radius: 8px 8px 0 0;
     font-size: 1.2em;
-    padding-left: 10px;
-    border-left: 3px solid #3498db;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+}
+
+.semester-header {
+    grid-column: span 1;
+    background-color: var(--color-pastel-2);
+    padding: 10px;
+    text-align: center;
+    font-weight: bold;
+    border-radius: 4px;
 }
 
 .subject {
     background-color: white;
+    padding: 12px;
+    margin: 5px 0;
     border-radius: 6px;
-    padding: 15px;
-    margin-bottom: 15px;
-    box-shadow: 0 2px 5px rgba(0,0,0,0.05);
-    border-left: 4px solid #3498db;
-    transition: transform 0.2s, box-shadow 0.2s;
-}
-
-.subject:hover {
-    transform: translateY(-3px);
-    box-shadow: 0 5px 15px rgba(0,0,0,0.1);
-}
-
-.subject[data-area="math"] {
-    border-left-color: #e74c3c;
-}
-
-.subject[data-area="physics"] {
-    border-left-color: #9b59b6;
-}
-
-.subject[data-area="engineering"] {
-    border-left-color: #2ecc71;
-}
-
-.subject[data-area="elective"] {
-    border-left-color: #f39c12;
-}
-
-.subject[data-area="requirement"] {
-    border-left-color: #95a5a6;
-}
-
-.subject h4 {
-    margin: 0 0 10px 0;
-    color: #2c3e50;
-}
-
-.subject-info {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-}
-
-.credits {
-    font-size: 0.8em;
-    color: #7f8c8d;
-}
-
-.details-btn {
-    background-color: #3498db;
-    color: white;
-    border: none;
-    padding: 5px 10px;
-    border-radius: 3px;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
     cursor: pointer;
-    font-size: 0.8em;
-    transition: background-color 0.3s;
+    transition: all 0.3s;
+    position: relative;
+    overflow: hidden;
 }
 
-.details-btn:hover {
-    background-color: #2980b9;
+.subject.disabled {
+    background-color: var(--color-disabled);
+    color: #888;
+    cursor: not-allowed;
 }
 
-.prerequisites {
-    margin-top: 10px;
-    padding-top: 10px;
-    border-top: 1px dashed #ecf0f1;
-    font-size: 0.8em;
-    color: #7f8c8d;
-}
-
-/* Modal */
-.modal {
-    display: none;
-    position: fixed;
-    z-index: 1000;
-    left: 0;
-    top: 0;
-    width: 100%;
-    height: 100%;
-    background-color: rgba(0,0,0,0.5);
-    overflow: auto;
-}
-
-.modal-content {
-    background-color: white;
-    margin: 5% auto;
-    padding: 25px;
-    border-radius: 8px;
-    width: 80%;
-    max-width: 600px;
-    box-shadow: 0 5px 20px rgba(0,0,0,0.2);
+.subject.approved {
+    background-color: var(--color-approved);
     position: relative;
 }
 
-.close-modal {
+.subject.approved::after {
+    content: "";
     position: absolute;
-    right: 20px;
-    top: 15px;
-    font-size: 1.5em;
-    color: #7f8c8d;
-    cursor: pointer;
+    top: 50%;
+    left: 10%;
+    width: 80%;
+    height: 2px;
+    background-color: #2ecc71;
+    transform: rotate(-5deg);
 }
 
-.close-modal:hover {
-    color: #e74c3c;
+.subject-name {
+    font-weight: 500;
+    margin-bottom: 5px;
 }
 
-#modal-title {
-    margin-top: 0;
+.subject-credits {
+    font-size: 0.8em;
+    color: #666;
+}
+
+.subject.prerequisite {
+    border-left: 4px solid #e74c3c;
+}
+
+/* Colores por año */
+.year-1 .subject:not(.disabled):not(.approved) {
+    background-color: var(--color-pastel-1);
+}
+.year-2 .subject:not(.disabled):not(.approved) {
+    background-color: var(--color-pastel-2);
+}
+.year-3 .subject:not(.disabled):not(.approved) {
+    background-color: var(--color-pastel-3);
+}
+.year-4 .subject:not(.disabled):not(.approved) {
+    background-color: var(--color-pastel-4);
+}
+.year-5 .subject:not(.disabled):not(.approved) {
+    background-color: var(--color-pastel-5);
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+    .curriculum-table {
+        grid-template-columns: 1fr;
+    }
+    
+    .year-header {
+        grid-column: span 1;
+        margin-top: 20px;
+    }
+}
