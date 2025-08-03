@@ -3,31 +3,574 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Plan de Estudios - Universidad</title>
+    <title>Malla Curricular - Ingeniería</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
-    <h1>📚 Plan de Estudios - Mi Carrera</h1>
-    <div class="malla">
-        <div class="semestre">
-            <h2>Semestre 1</h2>
-            <div class="asignatura" onclick="mostrarDetalle('Programación I')">
-                <h3>Programación I</h3>
-                <p>4 créditos</p>
-            </div>
-            <div class="asignatura" onclick="mostrarDetalle('Matemáticas I')">
-                <h3>Matemáticas I</h3>
-                <p>5 créditos</p>
-            </div>
-        </div>
-        <div class="semestre">
-            <h2>Semestre 2</h2>
-            <div class="asignatura" onclick="mostrarDetalle('Bases de Datos')">
-                <h3>Bases de Datos</h3>
-                <p>4 créditos</p>
+    <header>
+        <h1><i class="fas fa-graduation-cap"></i> Malla Curricular de Ingeniería</h1>
+        <div class="controls">
+            <button id="toggle-prereqs">Mostrar/Ocultar Requisitos</button>
+            <div class="legend">
+                <span class="legend-item"><div class="color-basic"></div> Básica</span>
+                <span class="legend-item"><div class="color-math"></div> Matemática</span>
+                <span class="legend-item"><div class="color-physics"></div> Física</span>
+                <span class="legend-item"><div class="color-engineering"></div> Ingeniería</span>
+                <span class="legend-item"><div class="color-elective"></div> Electiva</span>
+                <span class="legend-item"><div class="color-requirement"></div> Requisito</span>
             </div>
         </div>
-        <!-- Más semestres -->
+    </header>
+
+    <div class="curriculum-container">
+        <!-- PRIMER AÑO -->
+        <div class="year" data-year="1">
+            <h2><i class="fas fa-calendar-alt"></i> Primer Año</h2>
+            
+            <div class="semester">
+                <h3>Primer Cuatrimestre</h3>
+                <div class="subject" data-id="alg" data-area="math">
+                    <h4>Álgebra Lineal y Geometría Analítica</h4>
+                    <div class="subject-info">
+                        <span class="credits">4 créditos</span>
+                        <button class="details-btn">Detalles</button>
+                    </div>
+                    <div class="prerequisites" style="display: none;">
+                        <p>No tiene requisitos previos</p>
+                    </div>
+                </div>
+                
+                <div class="subject" data-id="analisis1" data-area="math">
+                    <h4>Análisis Matemático I</h4>
+                    <div class="subject-info">
+                        <span class="credits">5 créditos</span>
+                        <button class="details-btn">Detalles</button>
+                    </div>
+                    <div class="prerequisites" style="display: none;">
+                        <p>No tiene requisitos previos</p>
+                    </div>
+                </div>
+                
+                <div class="subject" data-id="sistemas-rep" data-area="basic">
+                    <h4>Sistemas de Representación</h4>
+                    <div class="subject-info">
+                        <span class="credits">3 créditos</span>
+                        <button class="details-btn">Detalles</button>
+                    </div>
+                    <div class="prerequisites" style="display: none;">
+                        <p>No tiene requisitos previos</p>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="semester">
+                <h3>Segundo Cuatrimestre</h3>
+                <div class="subject" data-id="fisica1" data-area="physics" data-requires="alg analisis1">
+                    <h4>Física I</h4>
+                    <div class="subject-info">
+                        <span class="credits">5 créditos</span>
+                        <button class="details-btn">Detalles</button>
+                    </div>
+                    <div class="prerequisites" style="display: none;">
+                        <p>Requisitos: Álgebra Lineal y Geometría Analítica, Análisis Matemático I</p>
+                    </div>
+                </div>
+                
+                <div class="subject" data-id="quimica" data-area="basic" data-requires="analisis1">
+                    <h4>Química General</h4>
+                    <div class="subject-info">
+                        <span class="credits">4 créditos</span>
+                        <button class="details-btn">Detalles</button>
+                    </div>
+                    <div class="prerequisites" style="display: none;">
+                        <p>Requisitos: Análisis Matemático I</p>
+                    </div>
+                </div>
+                
+                <div class="subject" data-id="informatica" data-area="basic" data-requires="alg">
+                    <h4>Informática</h4>
+                    <div class="subject-info">
+                        <span class="credits">3 créditos</span>
+                        <button class="details-btn">Detalles</button>
+                    </div>
+                    <div class="prerequisites" style="display: none;">
+                        <p>Requisitos: Álgebra Lineal y Geometría Analítica</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- SEGUNDO AÑO -->
+        <div class="year" data-year="2">
+            <h2><i class="fas fa-calendar-alt"></i> Segundo Año</h2>
+            
+            <div class="semester">
+                <h3>Primer Cuatrimestre</h3>
+                <div class="subject" data-id="analisis2" data-area="math" data-requires="fisica1">
+                    <h4>Análisis Matemático II</h4>
+                    <div class="subject-info">
+                        <span class="credits">5 créditos</span>
+                        <button class="details-btn">Detalles</button>
+                    </div>
+                    <div class="prerequisites" style="display: none;">
+                        <p>Requisitos: Física I</p>
+                    </div>
+                </div>
+                
+                <div class="subject" data-id="circuitos" data-area="engineering" data-requires="quimica alg">
+                    <h4>Introducción a los Circuitos Eléctricos</h4>
+                    <div class="subject-info">
+                        <span class="credits">4 créditos</span>
+                        <button class="details-btn">Detalles</button>
+                    </div>
+                    <div class="prerequisites" style="display: none;">
+                        <p>Requisitos: Química General, Álgebra Lineal y Geometría Analítica</p>
+                    </div>
+                </div>
+                
+                <div class="subject" data-id="probabilidad" data-area="math">
+                    <h4>Probabilidad y Estadística</h4>
+                    <div class="subject-info">
+                        <span class="credits">4 créditos</span>
+                        <button class="details-btn">Detalles</button>
+                    </div>
+                    <div class="prerequisites" style="display: none;">
+                        <p>No tiene requisitos previos</p>
+                    </div>
+                </div>
+                
+                <div class="subject" data-id="resistencia" data-area="engineering" data-requires="sistemas-rep fisica1 informatica ing-soc">
+                    <h4>Estabilidad y Resistencia de Materiales</h4>
+                    <div class="subject-info">
+                        <span class="credits">5 créditos</span>
+                        <button class="details-btn">Detalles</button>
+                    </div>
+                    <div class="prerequisites" style="display: none;">
+                        <p>Requisitos: Sistemas de Representación, Física I, Informática, Ingeniería y Sociedad</p>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="semester">
+                <h3>Segundo Cuatrimestre</h3>
+                <div class="subject" data-id="fisica2" data-area="physics" data-requires="fisica1 analisis2">
+                    <h4>Física II</h4>
+                    <div class="subject-info">
+                        <span class="credits">5 créditos</span>
+                        <button class="details-btn">Detalles</button>
+                    </div>
+                    <div class="prerequisites" style="display: none;">
+                        <p>Requisitos: Física I, Análisis Matemático II</p>
+                    </div>
+                </div>
+                
+                <div class="subject" data-id="mat-aplicada" data-area="math" data-requires="informatica analisis2">
+                    <h4>Matemática Aplicada</h4>
+                    <div class="subject-info">
+                        <span class="credits">4 créditos</span>
+                        <button class="details-btn">Detalles</button>
+                    </div>
+                    <div class="prerequisites" style="display: none;">
+                        <p>Requisitos: Informática, Análisis Matemático II</p>
+                    </div>
+                </div>
+                
+                <div class="subject" data-id="termodinamica" data-area="physics" data-requires="analisis1 quimica">
+                    <h4>Termodinámica</h4>
+                    <div class="subject-info">
+                        <span class="credits">4 créditos</span>
+                        <button class="details-btn">Detalles</button>
+                    </div>
+                    <div class="prerequisites" style="display: none;">
+                        <p>Requisitos: Análisis Matemático I, Química General</p>
+                    </div>
+                </div>
+                
+                <div class="subject" data-id="sistemas-rep-aplicada" data-area="engineering" data-requires="sistemas-rep informatica">
+                    <h4>Sistemas de Representación Aplicada</h4>
+                    <div class="subject-info">
+                        <span class="credits">3 créditos</span>
+                        <button class="details-btn">Detalles</button>
+                    </div>
+                    <div class="prerequisites" style="display: none;">
+                        <p>Requisitos: Sistemas de Representación, Informática</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- TERCER AÑO -->
+        <div class="year" data-year="3">
+            <h2><i class="fas fa-calendar-alt"></i> Tercer Año</h2>
+            
+            <div class="semester">
+                <h3>Primer Cuatrimestre</h3>
+                <div class="subject" data-id="mecanica" data-area="physics" data-requires="fisica1 informatica mat-aplicada ingles1">
+                    <h4>Mecánica</h4>
+                    <div class="subject-info">
+                        <span class="credits">5 créditos</span>
+                        <button class="details-btn">Detalles</button>
+                    </div>
+                    <div class="prerequisites" style="display: none;">
+                        <p>Requisitos: Física I, Informática, Matemática Aplicada, Inglés I</p>
+                    </div>
+                </div>
+                
+                <div class="subject" data-id="fluidos" data-area="physics" data-requires="resistencia fisica2 ingles1">
+                    <h4>Mecánica de los Fluidos</h4>
+                    <div class="subject-info">
+                        <span class="credits">4 créditos</span>
+                        <button class="details-btn">Detalles</button>
+                    </div>
+                    <div class="prerequisites" style="display: none;">
+                        <p>Requisitos: Estabilidad y Resistencia de Materiales, Física II, Inglés I</p>
+                    </div>
+                </div>
+                
+                <div class="subject" data-id="sistemas1" data-area="engineering" data-requires="fisica2 circuitos ingles1">
+                    <h4>Sistemas y Señales I</h4>
+                    <div class="subject-info">
+                        <span class="credits">4 créditos</span>
+                        <button class="details-btn">Detalles</button>
+                    </div>
+                    <div class="prerequisites" style="display: none;">
+                        <p>Requisitos: Física II, Introducción a los Circuitos Eléctricos, Inglés I</p>
+                    </div>
+                </div>
+                
+                <div class="subject" data-id="mediciones" data-area="engineering" data-requires="fisica2 circuitos ingles1">
+                    <h4>Mediciones Eléctricas</h4>
+                    <div class="subject-info">
+                        <span class="credits">4 créditos</span>
+                        <button class="details-btn">Detalles</button>
+                    </div>
+                    <div class="prerequisites" style="display: none;">
+                        <p>Requisitos: Física II, Introducción a los Circuitos Eléctricos, Inglés I</p>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="semester">
+                <h3>Segundo Cuatrimestre</h3>
+                <div class="subject" data-id="sistemas2" data-area="engineering" data-requires="sistemas1 ingles1">
+                    <h4>Sistemas y Señales II</h4>
+                    <div class="subject-info">
+                        <span class="credits">4 créditos</span>
+                        <button class="details-btn">Detalles</button>
+                    </div>
+                    <div class="prerequisites" style="display: none;">
+                        <p>Requisitos: Sistemas y Señales I, Inglés I</p>
+                    </div>
+                </div>
+                
+                <div class="subject" data-id="electromagnetismo" data-area="physics" data-requires="sistemas1 ingles1">
+                    <h4>Electromagnetismo</h4>
+                    <div class="subject-info">
+                        <span class="credits">5 créditos</span>
+                        <button class="details-btn">Detalles</button>
+                    </div>
+                    <div class="prerequisites" style="display: none;">
+                        <p>Requisitos: Sistemas y Señales I, Inglés I</p>
+                    </div>
+                </div>
+                
+                <div class="subject" data-id="estadistica-exp" data-area="math" data-requires="probabilidad ingles1">
+                    <h4>Estadística Experimental</h4>
+                    <div class="subject-info">
+                        <span class="credits">3 créditos</span>
+                        <button class="details-btn">Detalles</button>
+                    </div>
+                    <div class="prerequisites" style="display: none;">
+                        <p>Requisitos: Probabilidad y Estadística, Inglés I</p>
+                    </div>
+                </div>
+                
+                <div class="subject" data-id="electronica-analog" data-area="engineering" data-requires="sistemas1 ingles1">
+                    <h4>Electrónica Analógica</h4>
+                    <div class="subject-info">
+                        <span class="credits">5 créditos</span>
+                        <button class="details-btn">Detalles</button>
+                    </div>
+                    <div class="prerequisites" style="display: none;">
+                        <p>Requisitos: Sistemas y Señales I, Inglés I</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- CUARTO AÑO -->
+        <div class="year" data-year="4">
+            <h2><i class="fas fa-calendar-alt"></i> Cuarto Año</h2>
+            
+            <div class="semester">
+                <h3>Primer Cuatrimestre</h3>
+                <div class="subject" data-id="electronica-digital" data-area="engineering" data-requires="electronica-analog">
+                    <h4>Electrónica Digital</h4>
+                    <div class="subject-info">
+                        <span class="credits">4 créditos</span>
+                        <button class="details-btn">Detalles</button>
+                    </div>
+                    <div class="prerequisites" style="display: none;">
+                        <p>Requisitos: Electrónica Analógica</p>
+                    </div>
+                </div>
+                
+                <div class="subject" data-id="elementos-maquinas" data-area="engineering" data-requires="sistemas-rep-aplicada mecanica">
+                    <h4>Elementos de Máquinas</h4>
+                    <div class="subject-info">
+                        <span class="credits">4 créditos</span>
+                        <button class="details-btn">Detalles</button>
+                    </div>
+                    <div class="prerequisites" style="display: none;">
+                        <p>Requisitos: Sistemas de Representación Aplicada, Mecánica</p>
+                    </div>
+                </div>
+                
+                <div class="subject" data-id="electronica-industrial" data-area="engineering" data-requires="electronica-analog">
+                    <h4>Electrónica Industrial</h4>
+                    <div class="subject-info">
+                        <span class="credits">5 créditos</span>
+                        <button class="details-btn">Detalles</button>
+                    </div>
+                    <div class="prerequisites" style="display: none;">
+                        <p>Requisitos: Electrónica Analógica</p>
+                    </div>
+                </div>
+                
+                <div class="subject" data-id="maquinas-termicas" data-area="engineering" data-requires="termodinamica fluidos">
+                    <h4>Máquinas Térmicas e Hidráulicas</h4>
+                    <div class="subject-info">
+                        <span class="credits">5 créditos</span>
+                        <button class="details-btn">Detalles</button>
+                    </div>
+                    <div class="prerequisites" style="display: none;">
+                        <p>Requisitos: Termodinámica, Mecánica de los Fluidos</p>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="semester">
+                <h3>Segundo Cuatrimestre</h3>
+                <div class="subject" data-id="instalaciones" data-area="engineering" data-requires="electronica-industrial">
+                    <h4>Instalaciones Eléctricas</h4>
+                    <div class="subject-info">
+                        <span class="credits">4 créditos</span>
+                        <button class="details-btn">Detalles</button>
+                    </div>
+                    <div class="prerequisites" style="display: none;">
+                        <p>Requisitos: Electrónica Industrial</p>
+                    </div>
+                </div>
+                
+                <div class="subject" data-id="materiales" data-area="engineering" data-requires="estadistica-exp quimica">
+                    <h4>Materiales</h4>
+                    <div class="subject-info">
+                        <span class="credits">4 créditos</span>
+                        <button class="details-btn">Detalles</button>
+                    </div>
+                    <div class="prerequisites" style="display: none;">
+                        <p>Requisitos: Estadística Experimental, Química General</p>
+                    </div>
+                </div>
+                
+                <div class="subject" data-id="maquinas-electricas" data-area="engineering" data-requires="electronica-analog electronica-digital">
+                    <h4>Máquinas Eléctricas</h4>
+                    <div class="subject-info">
+                        <span class="credits">5 créditos</span>
+                        <button class="details-btn">Detalles</button>
+                    </div>
+                    <div class="prerequisites" style="display: none;">
+                        <p>Requisitos: Electrónica Analógica, Electrónica Digital</p>
+                    </div>
+                </div>
+                
+                <div class="subject" data-id="control-automatico" data-area="engineering" data-requires="mediciones sistemas2 electronica-industrial">
+                    <h4>Instrumentación y Control Automático</h4>
+                    <div class="subject-info">
+                        <span class="credits">5 créditos</span>
+                        <button class="details-btn">Detalles</button>
+                    </div>
+                    <div class="prerequisites" style="display: none;">
+                        <p>Requisitos: Mediciones Eléctricas, Sistemas y Señales II, Electrónica Industrial</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- QUINTO AÑO -->
+        <div class="year" data-year="5">
+            <h2><i class="fas fa-calendar-alt"></i> Quinto Año</h2>
+            
+            <div class="semester">
+                <h3>Primer Cuatrimestre</h3>
+                <div class="subject" data-id="mecanismos" data-area="engineering" data-requires="elementos-maquinas materiales ingles2">
+                    <h4>Mecanismos y Tecnología Mecánica</h4>
+                    <div class="subject-info">
+                        <span class="credits">4 créditos</span>
+                        <button class="details-btn">Detalles</button>
+                    </div>
+                    <div class="prerequisites" style="display: none;">
+                        <p>Requisitos: Elementos de Máquinas, Materiales, Inglés II o Portugués</p>
+                    </div>
+                </div>
+                
+                <div class="subject" data-id="derecho" data-area="requirement" data-requires="ingles2 maquinas-termicas maquinas-electricas control-automatico">
+                    <h4>Derecho para Ingenieros</h4>
+                    <div class="subject-info">
+                        <span class="credits">3 créditos</span>
+                        <button class="details-btn">Detalles</button>
+                    </div>
+                    <div class="prerequisites" style="display: none;">
+                        <p>Requisitos: Inglés II o Portugués, Máquinas Térmicas e Hidráulicas, Máquinas Eléctricas, Instrumentación y Control Automático</p>
+                    </div>
+                </div>
+                
+                <div class="subject" data-id="electiva1" data-area="elective" data-requires="ingles2 all-fourth-year">
+                    <h4>Electiva I</h4>
+                    <div class="subject-info">
+                        <span class="credits">3 créditos</span>
+                        <button class="details-btn">Detalles</button>
+                    </div>
+                    <div class="prerequisites" style="display: none;">
+                        <p>Requisitos: Inglés II o Portugués y todas las asignaturas de Cuarto Año</p>
+                    </div>
+                </div>
+                
+                <div class="subject" data-id="gestion-ambiental" data-area="requirement" data-requires="ingles2 maquinas-electricas control-automatico">
+                    <h4>Gestión Ambiental</h4>
+                    <div class="subject-info">
+                        <span class="credits">3 créditos</span>
+                        <button class="details-btn">Detalles</button>
+                    </div>
+                    <div class="prerequisites" style="display: none;">
+                        <p>Requisitos: Inglés II o Portugués, Máquinas Eléctricas, Instrumentación y Control Automático</p>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="semester">
+                <h3>Segundo Cuatrimestre</h3>
+                <div class="subject" data-id="economia" data-area="requirement" data-requires="ingles2 derecho">
+                    <h4>Economía y Organización Industrial</h4>
+                    <div class="subject-info">
+                        <span class="credits">3 créditos</span>
+                        <button class="details-btn">Detalles</button>
+                    </div>
+                    <div class="prerequisites" style="display: none;">
+                        <p>Requisitos: Inglés II o Portugués, Derecho para Ingenieros</p>
+                    </div>
+                </div>
+                
+                <div class="subject" data-id="electiva2" data-area="elective" data-requires="ingles2 all-fourth-year">
+                    <h4>Electiva II</h4>
+                    <div class="subject-info">
+                        <span class="credits">3 créditos</span>
+                        <button class="details-btn">Detalles</button>
+                    </div>
+                    <div class="prerequisites" style="display: none;">
+                        <p>Requisitos: Inglés II o Portugués y todas las asignaturas de Cuarto Año</p>
+                    </div>
+                </div>
+                
+                <div class="subject" data-id="seguridad" data-area="requirement" data-requires="ingles2 gestion-ambiental">
+                    <h4>Higiene y Seguridad Industrial</h4>
+                    <div class="subject-info">
+                        <span class="credits">3 créditos</span>
+                        <button class="details-btn">Detalles</button>
+                    </div>
+                    <div class="prerequisites" style="display: none;">
+                        <p>Requisitos: Inglés II o Portugués, Gestión Ambiental</p>
+                    </div>
+                </div>
+                
+                <div class="subject" data-id="electiva3" data-area="elective" data-requires="ingles2 all-fourth-year">
+                    <h4>Electiva III</h4>
+                    <div class="subject-info">
+                        <span class="credits">3 créditos</span>
+                        <button class="details-btn">Detalles</button>
+                    </div>
+                    <div class="prerequisites" style="display: none;">
+                        <p>Requisitos: Inglés II o Portugués y todas las asignaturas de Cuarto Año</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- REQUISITOS CURRICULARES -->
+        <div class="year" data-year="req">
+            <h2><i class="fas fa-clipboard-check"></i> Requisitos Curriculares</h2>
+            
+            <div class="semester">
+                <div class="subject" data-id="ingles1" data-area="requirement">
+                    <h4>Inglés I</h4>
+                    <div class="subject-info">
+                        <span class="credits">2 créditos</span>
+                        <button class="details-btn">Detalles</button>
+                    </div>
+                    <div class="prerequisites" style="display: none;">
+                        <p>No tiene requisitos previos</p>
+                    </div>
+                </div>
+                
+                <div class="subject" data-id="ingles2" data-area="requirement" data-requires="ingles1">
+                    <h4>Inglés II o Portugués</h4>
+                    <div class="subject-info">
+                        <span class="credits">2 créditos</span>
+                        <button class="details-btn">Detalles</button>
+                    </div>
+                    <div class="prerequisites" style="display: none;">
+                        <p>Requisitos: Inglés I</p>
+                    </div>
+                </div>
+                
+                <div class="subject" data-id="ing-soc" data-area="requirement" data-requires="alg analisis1">
+                    <h4>Ingeniería y Sociedad</h4>
+                    <div class="subject-info">
+                        <span class="credits">2 créditos</span>
+                        <button class="details-btn">Detalles</button>
+                    </div>
+                    <div class="prerequisites" style="display: none;">
+                        <p>Requisitos: Álgebra Lineal y Geometría Analítica, Análisis Matemático I</p>
+                    </div>
+                </div>
+                
+                <div class="subject" data-id="practica" data-area="requirement" data-requires="all-fourth-year">
+                    <h4>Práctica Profesional Supervisada</h4>
+                    <div class="subject-info">
+                        <span class="credits">10 créditos</span>
+                        <button class="details-btn">Detalles</button>
+                    </div>
+                    <div class="prerequisites" style="display: none;">
+                        <p>Requisitos: Todas las asignaturas de Cuarto Año</p>
+                    </div>
+                </div>
+                
+                <div class="subject" data-id="proyecto-final" data-area="requirement" data-requires="all-fifth-year">
+                    <h4>Proyecto Final</h4>
+                    <div class="subject-info">
+                        <span class="credits">12 créditos</span>
+                        <button class="details-btn">Detalles</button>
+                    </div>
+                    <div class="prerequisites" style="display: none;">
+                        <p>Requisitos: Todas las asignaturas de Quinto Año</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal" id="subject-modal">
+        <div class="modal-content">
+            <span class="close-modal">&times;</span>
+            <h2 id="modal-title">Título de la Asignatura</h2>
+            <div id="modal-body">
+                <p><strong>Créditos:</strong> <span id="modal-credits">0</span></p>
+                <p><strong>Área:</strong> <span id="modal-area">Área</span></p>
+                <p><strong>Requisitos:</strong> <span id="modal-prereqs">Ninguno</span></p>
+                <p><strong>Descripción:</strong> <span id="modal-description">Descripción detallada de la asignatura.</span></p>
+            </div>
+        </div>
     </div>
 
     <script src="script.js"></script>
