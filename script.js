@@ -1,168 +1,490 @@
-document.addEventListener('DOMContentLoaded', function() {
-    // Variables globales
-    const subjects = document.querySelectorAll('.subject');
-    const togglePrereqsBtn = document.getElementById('toggle-prereqs');
-    const modal = document.getElementById('subject-modal');
-    const closeModalBtn = document.querySelector('.close-modal');
-    let prereqsVisible = false;
+document.addEventListener('DOMContentLoaded', function(){
 
-    // Mapeo de IDs a nombres completos para requisitos
-    const subjectNames = {
-        'alg': 'Álgebra Lineal y Geometría Analítica',
-        'analisis1': 'Análisis Matemático I',
-        'sistemas-rep': 'Sistemas de Representación',
-        'fisica1': 'Física I',
-        'quimica': 'Química General',
-        'informatica': 'Informática',
-        'analisis2': 'Análisis Matemático II',
-        'circuitos': 'Introducción a los Circuitos Eléctricos',
-        'probabilidad': 'Probabilidad y Estadística',
-        'resistencia': 'Estabilidad y Resistencia de Materiales',
-        'fisica2': 'Física II',
-        'mat-aplicada': 'Matemática Aplicada',
-        'termodinamica': 'Termodinámica',
-        'sistemas-rep-aplicada': 'Sistemas de Representación Aplicada',
-        'mecanica': 'Mecánica',
-        'fluidos': 'Mecánica de los Fluidos',
-        'sistemas1': 'Sistemas y Señales I',
-        'mediciones': 'Mediciones Eléctricas',
-        'sistemas2': 'Sistemas y Señales II',
-        'electromagnetismo': 'Electromagnetismo',
-        'estadistica-exp': 'Estadística Experimental',
-        'electronica-analog': 'Electrónica Analógica',
-        'electronica-digital': 'Electrónica Digital',
-        'elementos-maquinas': 'Elementos de Máquinas',
-        'electronica-industrial': 'Electrónica Industrial',
-        'maquinas-termicas': 'Máquinas Térmicas e Hidráulicas',
-        'instalaciones': 'Instalaciones Eléctricas',
-        'materiales': 'Materiales',
-        'maquinas-electricas': 'Máquinas Eléctricas',
-        'control-automatico': 'Instrumentación y Control Automático',
-        'mecanismos': 'Mecanismos y Tecnología Mecánica',
-        'derecho': 'Derecho para Ingenieros',
-        'electiva1': 'Electiva I',
-        'gestion-ambiental': 'Gestión Ambiental',
-        'economia': 'Economía y Organización Industrial',
-        'electiva2': 'Electiva II',
-        'seguridad': 'Higiene y Seguridad Industrial',
-        'electiva3': 'Electiva III',
-        'ingles1': 'Inglés I',
-        'ingles2': 'Inglés II o Portugués',
-        'ing-soc': 'Ingeniería y Sociedad',
-        'practica': 'Práctica Profesional Supervisada',
-        'proyecto-final': 'Proyecto Final'
-    };
-
-    // Mapeo de áreas a descripciones
-    const areaDescriptions = {
-        'basic': 'Básica',
-        'math': 'Matemática',
-        'physics': 'Física',
-        'engineering': 'Ingeniería',
-        'elective': 'Electiva',
-        'requirement': 'Requisito Curricular'
-    };
-
-    // Mostrar/ocultar requisitos
-    togglePrereqsBtn.addEventListener('click', function() {
-        prereqsVisible = !prereqsVisible;
-        const prereqElements = document.querySelectorAll('.prerequisites');
-        
-        prereqElements.forEach(el => {
-            el.style.display = prereqsVisible ? 'block' : 'none';
-        });
-        
-        this.textContent = prereqsVisible ? 'Ocultar Requisitos' : 'Mostrar Requisitos';
-    });
-
-    // Configurar eventos para los botones de detalles
-    document.querySelectorAll('.details-btn').forEach(btn => {
-        btn.addEventListener('click', function() {
-            const subject = this.closest('.subject');
-            const subjectId = subject.dataset.id;
-            const subjectTitle = subject.querySelector('h4').textContent;
-            const subjectCredits = subject.querySelector('.credits').textContent;
-            const subjectArea = areaDescriptions[subject.dataset.area];
-            
-            // Obtener requisitos
-            let prereqsText = 'Ninguno';
-            if (subject.dataset.requires) {
-                const prereqIds = subject.dataset.requires.split(' ');
-                
-                // Manejar requisitos especiales
-                if (prereqIds.includes('all-fourth-year')) {
-                    prereqsText = 'Todas las asignaturas de Cuarto Año';
-                } else if (prereqIds.includes('all-fifth-year')) {
-                    prereqsText = 'Todas las asignaturas de Quinto Año';
-                } else {
-                    prereqsText = prereqIds.map(id => {
-                        // Manejar el caso de inglés1 que está en los requisitos pero no en el data-id
-                        if (id === 'ingles') return 'Inglés I';
-                        return subjectNames[id] || id;
-                    }).join(', ');
+    // Datos de la malla curricular
+    const curriculumData = [
+        {
+            year: 1,
+            name: "Primer Año",
+            semesters: [
+                {
+                    name: "Primer Cuatrimestre",
+                    subjects: [
+                        { id: "alg", name: "Álgebra Lineal y Geometría Analítica", credits: 4, requires: [] },
+                        { id: "analisis1", name: "Análisis Matemático I", credits: 5, requires: [] },
+                        { id: "sistemas-rep", name: "Sistemas de Representación", credits: 3, requires: [] }
+                    ]
+                },
+                {
+                    name: "Segundo Cuatrimestre",
+                    subjects: [
+                        { id: "fisica1", name: "Física I", credits: 5, requires: ["alg", "analisis1"] },
+                        { id: "quimica", name: "Química General", credits: 4, requires: ["analisis1"] },
+                        { id: "informatica", name: "Informática", credits: 3, requires: ["alg"] }
+                    ]
                 }
-            }
-            
-            // Actualizar modal
-            document.getElementById('modal-title').textContent = subjectTitle;
-            document.getElementById('modal-credits').textContent = subjectCredits;
-            document.getElementById('modal-area').textContent = subjectArea;
-            document.getElementById('modal-prereqs').textContent = prereqsText;
-            
-            // Aquí podrías agregar una descripción más detallada basada en el ID
-            document.getElementById('modal-description').textContent = getSubjectDescription(subjectId);
-            
-            // Mostrar modal
-            modal.style.display = 'block';
-        });
-    });
+            ]
+        },
+        {
+            year: 2,
+            name: "Segundo Año",
+            semesters: [
+                {
+                    name: "Primer Cuatrimestre",
+                    subjects: [
+                        { id: "analisis2", name: "Análisis Matemático II", credits: 5, requires: ["fisica1"] },
+                        { id: "circuitos", name: "Introducción a los Circuitos Eléctricos", credits: 4, requires: ["quimica", "alg"] },
+                        { id: "probabilidad", name: "Probabilidad y Estadística", credits: 4, requires: [] },
+                        { id: "resistencia", name: "Estabilidad y Resistencia de Materiales", credits: 5, requires: ["sistemas-rep", "fisica1", "informatica"] }
+                    ]
+                },
+                {
+                    name: "Segundo Cuatrimestre",
+                    subjects: [
+                        { id: "fisica2", name: "Física II", credits: 5, requires: ["fisica1", "analisis2"] },
+                        { id: "mat-aplicada", name: "Matemática Aplicada", credits: 4, requires: ["informatica", "analisis2"] },
+                        { id: "termodinamica", name: "Termodinámica", credits: 4, requires: ["analisis1", "quimica"] },
+                        { id: "sistemas-rep-aplicada", name: "Sistemas de Representación Aplicada", credits: 3, requires: ["sistemas-rep", "informatica"] }
+                    ]
+                }
+            ]
+        },
+        // ... (agregar los demás años de la misma forma)
 
-    // Cerrar modal
-    closeModalBtn.addEventListener('click', function() {
-        modal.style.display = 'none';
-    });
-
-    // Cerrar modal al hacer clic fuera
-    window.addEventListener('click', function(event) {
-        if (event.target === modal) {
-            modal.style.display = 'none';
+    {
+    year: 3,
+    name: "Tercer Año",
+    semesters: [
+        {
+            name: "Primer Cuatrimestre",
+            subjects: [
+                { 
+                    id: "mecanica", 
+                    name: "Mecánica", 
+                    credits: 5, 
+                    requires: ["fisica1", "informatica", "mat-aplicada", "ingles1"] 
+                },
+                { 
+                    id: "fluidos", 
+                    name: "Mecánica de los Fluidos", 
+                    credits: 4, 
+                    requires: ["resistencia", "fisica2", "ingles1"] 
+                },
+                { 
+                    id: "sistemas1", 
+                    name: "Sistemas y Señales I", 
+                    credits: 4, 
+                    requires: ["fisica2", "circuitos", "ingles1"] 
+                },
+                { 
+                    id: "mediciones", 
+                    name: "Mediciones Eléctricas", 
+                    credits: 4, 
+                    requires: ["fisica2", "circuitos", "ingles1"] 
+                }
+            ]
+        },
+        {
+            name: "Segundo Cuatrimestre",
+            subjects: [
+                { 
+                    id: "sistemas2", 
+                    name: "Sistemas y Señales II", 
+                    credits: 4, 
+                    requires: ["sistemas1", "ingles1"] 
+                },
+                { 
+                    id: "electromagnetismo", 
+                    name: "Electromagnetismo", 
+                    credits: 5, 
+                    requires: ["sistemas1", "ingles1"] 
+                },
+                { 
+                    id: "estadistica-exp", 
+                    name: "Estadística Experimental", 
+                    credits: 3, 
+                    requires: ["probabilidad", "ingles1"] 
+                },
+                { 
+                    id: "electronica-analog", 
+                    name: "Electrónica Analógica", 
+                    credits: 5, 
+                    requires: ["sistemas1", "ingles1"] 
+                }
+            ]
         }
-    });
+    ]
+},
+        {
+    year: 4,
+    name: "Cuarto Año",
+    semesters: [
+        {
+            name: "Primer Cuatrimestre",
+            subjects: [
+                { 
+                    id: "electronica-digital", 
+                    name: "Electrónica Digital", 
+                    credits: 4, 
+                    requires: ["electronica-analog"] 
+                },
+                { 
+                    id: "elementos-maquinas", 
+                    name: "Elementos de Máquinas", 
+                    credits: 4, 
+                    requires: ["sistemas-rep-aplicada", "mecanica"] 
+                },
+                { 
+                    id: "electronica-industrial", 
+                    name: "Electrónica Industrial", 
+                    credits: 5, 
+                    requires: ["electronica-analog"] 
+                },
+                { 
+                    id: "maquinas-termicas", 
+                    name: "Máquinas Térmicas e Hidráulicas", 
+                    credits: 5, 
+                    requires: ["termodinamica", "fluidos"] 
+                }
+            ]
+        },
+        {
+            name: "Segundo Cuatrimestre",
+            subjects: [
+                { 
+                    id: "instalaciones", 
+                    name: "Instalaciones Eléctricas", 
+                    credits: 4, 
+                    requires: ["electronica-industrial"] 
+                },
+                { 
+                    id: "materiales", 
+                    name: "Materiales", 
+                    credits: 4, 
+                    requires: ["estadistica-exp", "quimica"] 
+                },
+                { 
+                    id: "maquinas-electricas", 
+                    name: "Máquinas Eléctricas", 
+                    credits: 5, 
+                    requires: ["electronica-analog", "electronica-digital"] 
+                },
+                { 
+                    id: "control-automatico", 
+                    name: "Instrumentación y Control Automático", 
+                    credits: 5, 
+                    requires: ["mediciones", "sistemas2", "electronica-industrial"] 
+                }
+            ]
+        }
+    ]
+},
+    {
+    year: 5,
+    name: "Quinto Año",
+    semesters: [
+        {
+            name: "Primer Cuatrimestre",
+            subjects: [
+                { 
+                    id: "mecanismos", 
+                    name: "Mecanismos y Tecnología Mecánica", 
+                    credits: 4, 
+                    requires: ["elementos-maquinas", "materiales", "ingles2"] 
+                },
+                { 
+                    id: "derecho", 
+                    name: "Derecho para Ingenieros", 
+                    credits: 3, 
+                    requires: ["ingles2", "maquinas-termicas", "maquinas-electricas", "control-automatico"] 
+                },
+                { 
+                    id: "electiva1", 
+                    name: "Electiva I", 
+                    credits: 3, 
+                    requires: ["ingles2", "all-fourth-year"] 
+                },
+                { 
+                    id: "gestion-ambiental", 
+                    name: "Gestión Ambiental", 
+                    credits: 3, 
+                    requires: ["ingles2", "maquinas-electricas", "control-automatico"] 
+                }
+            ]
+        },
+        {
+            name: "Segundo Cuatrimestre",
+            subjects: [
+                { 
+                    id: "economia", 
+                    name: "Economía y Organización Industrial", 
+                    credits: 3, 
+                    requires: ["ingles2", "derecho"] 
+                },
+                { 
+                    id: "electiva2", 
+                    name: "Electiva II", 
+                    credits: 3, 
+                    requires: ["ingles2", "all-fourth-year"] 
+                },
+                { 
+                    id: "seguridad", 
+                    name: "Higiene y Seguridad Industrial", 
+                    credits: 3, 
+                    requires: ["ingles2", "gestion-ambiental"] 
+                },
+                { 
+                    id: "electiva3", 
+                    name: "Electiva III", 
+                    credits: 3, 
+                    requires: ["ingles2", "all-fourth-year"] 
+                }
+            ]
+        }
+    ]
+},
+      
+    {
+    year: 6,
+    name: "Requisitos Curriculares",
+    semesters: [
+        {
+            name: "Idiomas",
+            subjects: [
+                { 
+                    id: "ingles1", 
+                    name: "Inglés I", 
+                    credits: 2, 
+                    requires: [] 
+                },
+                { 
+                    id: "ingles2", 
+                    name: "Inglés II o Portugués", 
+                    credits: 2, 
+                    requires: ["ingles1"] 
+                }
+            ]
+        },
+        {
+            name: "Formación Integral",
+            subjects: [
+                { 
+                    id: "ing-soc", 
+                    name: "Ingeniería y Sociedad", 
+                    credits: 2, 
+                    requires: ["alg", "analisis1"] 
+                }
+            ]
+        },
+        {
+            name: "Actividades Finales",
+            subjects: [
+                { 
+                    id: "practica", 
+                    name: "Práctica Profesional Supervisada", 
+                    credits: 10, 
+                    requires: ["all-fourth-year"] // Requiere TODAS las materias de 4to año
+                },
+                { 
+                    id: "proyecto-final", 
+                    name: "Proyecto Final", 
+                    credits: 12, 
+                    requires: ["all-fifth-year"] // Requiere TODAS las materias de 5to año
+                }
+            ]
+        }
+    ]
+}
+     
+    ];
 
-    // Función para obtener descripciones detalladas (puedes expandir esto)
-    function getSubjectDescription(subjectId) {
-        const descriptions = {
-            'alg': 'Estudio de espacios vectoriales, transformaciones lineales y geometría analítica.',
-            'analisis1': 'Introducción al cálculo diferencial e integral en una variable.',
-            'fisica1': 'Fundamentos de mecánica clásica: cinemática, dinámica y conservación de energía.',
-            // Agrega más descripciones según sea necesario
-        };
-        
-        return descriptions[subjectId] || 'Descripción detallada de la asignatura.';
-    }
-
-    // Función para verificar requisitos (puedes implementar lógica de progreso real aquí)
-    function checkPrerequisites() {
-        subjects.forEach(subject => {
-            if (subject.dataset.requires) {
-                const requiredSubjects = subject.dataset.requires.split(' ');
-                let allMet = true;
-                
-                // Verificar cada requisito
-                requiredSubjects.forEach(req => {
-                    // Ignorar requisitos especiales para este ejemplo
-                    if (req !== 'all-fourth-year' && req !== 'all-fifth-year' && req !== 'ingles') {
-                        // En una implementación real, verificarías si el requisito está aprobado
-                        // Aquí solo mostramos visualmente los requisitos
-                    }
-                });
-                
-                // En una implementación real, cambiarías el estilo según si los requisitos están cumplidos
-                // subject.style.opacity = allMet ? '1' : '0.6';
-            }
+    // Estado de las materias aprobadas
+    let approvedSubjects = JSON.parse(localStorage.getItem('approvedSubjects')) || [];
+    
+    // Elementos del DOM
+    const tableContainer = document.querySelector('.curriculum-table');
+    const completedCountEl = document.getElementById('completed-count');
+    const totalCountEl = document.getElementById('total-count');
+    const resetBtn = document.getElementById('reset-btn');
+    
+    // Contador total de materias
+    let totalSubjects = 0;
+    curriculumData.forEach(year => {
+        year.semesters.forEach(semester => {
+            totalSubjects += semester.subjects.length;
         });
-    }
+    });
+    totalCountEl.textContent = totalSubjects;
 
-    // Inicializar
-    checkPrerequisites();
+    function checkFourthYearCompletion() {
+    const fourthYearSubjects = curriculumData
+        .find(year => year.year === 4).semesters
+        .flatMap(semester => semester.subjects.map(subject => subject.id));
+    
+    const allApproved = fourthYearSubjects.every(subjectId => 
+        approvedSubjects.includes(subjectId));
+    
+    if (allApproved && !approvedSubjects.includes('all-fourth-year')) {
+        approvedSubjects.push('all-fourth-year');
+    }
+}
+
+function checkFifthYearCompletion() {
+    const fifthYearSubjects = curriculumData
+        .find(year => year.year === 5).semesters
+        .flatMap(semester => semester.subjects.map(subject => subject.id));
+    
+    const allApproved = fifthYearSubjects.every(subjectId => 
+        approvedSubjects.includes(subjectId));
+    
+    if (allApproved && !approvedSubjects.includes('all-fifth-year')) {
+        approvedSubjects.push('all-fifth-year');
+    }
+}
+    
+    // Renderizar la tabla
+    function renderCurriculum() {
+        tableContainer.innerHTML = '';
+        
+        // Crear encabezados de años
+        curriculumData.forEach(yearData => {
+            const yearHeader = document.createElement('div');
+            yearHeader.className = `year-header year-${yearData.year}`;
+            yearHeader.textContent = yearData.name;
+            tableContainer.appendChild(yearHeader);
+            
+            // Crear semestres y materias
+            yearData.semesters.forEach(semester => {
+                const semesterHeader = document.createElement('div');
+                semesterHeader.className = 'semester-header';
+                semesterHeader.textContent = semester.name;
+                tableContainer.appendChild(semesterHeader);
+                
+                semester.subjects.forEach(subject => {
+                    const subjectEl = document.createElement('div');
+                    subjectEl.className = `subject year-${yearData.year}`;
+                    subjectEl.dataset.id = subject.id;
+                    
+                    // Verificar si está aprobada
+                    const isApproved = approvedSubjects.includes(subject.id);
+                    if (isApproved) {
+                        subjectEl.classList.add('approved');
+                    }
+                    
+                    // Verificar requisitos
+                    const requirementsMet = subject.requires.every(req => approvedSubjects.includes(req));
+                    if (!requirementsMet && subject.requires.length > 0 && !isApproved) {
+                        subjectEl.classList.add('disabled');
+                        // Dentro de renderCurriculum, en la verificación de requisitos:
+                    const requirementsMet = subject.requires.every(req => {
+                    if (req === 'all-fourth-year') {
+                    return checkFourthYearCompletion(true); // Solo verificación
+                    }
+                    if (req === 'all-fifth-year') {
+                    return checkFifthYearCompletion(true); // Solo verificación
+                    }
+                    return approvedSubjects.includes(req);
+                    });
+
+                // Versión modificada de las funciones de verificación para solo lectura
+            function checkFourthYearCompletion(onlyCheck = false) {
+            const fourthYearSubjects = curriculumData
+            .find(year => year.year === 4).semesters
+            .flatMap(semester => semester.subjects.map(subject => subject.id));
+    
+            const allApproved = fourthYearSubjects.every(subjectId => 
+            approvedSubjects.includes(subjectId));
+    
+            if (allApproved && !onlyCheck && !approvedSubjects.includes('all-fourth-year')) {
+            approvedSubjects.push('all-fourth-year');
+            }
+            return allApproved;
+}
+
+        function checkFifthYearCompletion(onlyCheck = false) {
+        const fifthYearSubjects = curriculumData
+        .find(year => year.year === 5).semesters
+        .flatMap(semester => semester.subjects.map(subject => subject.id));
+    
+        const allApproved = fifthYearSubjects.every(subjectId => 
+        approvedSubjects.includes(subjectId));
+    
+        if (allApproved && !onlyCheck && !approvedSubjects.includes('all-fifth-year')) {
+        approvedSubjects.push('all-fifth-year');
+        }
+        return allApproved;
+}
+                    }
+                    
+                    // Marcar si es requisito de otras
+                    const isPrerequisite = curriculumData.some(y => 
+                        y.semesters.some(s => 
+                            s.subjects.some(sub => 
+                                sub.requires.includes(subject.id)
+                            )
+                        )
+                    );
+                    if (isPrerequisite) {
+                        subjectEl.classList.add('prerequisite');
+                    }
+                    
+                    subjectEl.innerHTML = `
+                        <div class="subject-name">${subject.name}</div>
+                        <div class="subject-credits">${subject.credits} créditos</div>
+                    `;
+                    
+                    subjectEl.addEventListener('click', () => toggleApproval(subject.id));
+                    tableContainer.appendChild(subjectEl);
+                });
+            });
+        });
+        
+        updateCompletedCount();
+    }
+    
+    // Alternar aprobación de materia
+    function toggleApproval(subjectId) {
+    const subjectEl = document.querySelector(`.subject[data-id="${subjectId}"]`);
+    
+    if (subjectEl.classList.contains('disabled')) return;
+    
+    // Verificar si estamos aprobando una materia que desbloquea "all-fourth-year" o "all-fifth-year"
+    const year = subjectEl.closest('.year')?.dataset.year;
+    if (year === "4" && !approvedSubjects.includes(subjectId)) {
+        checkFourthYearCompletion();
+    }
+    if (year === "5" && !approvedSubjects.includes(subjectId)) {
+        checkFifthYearCompletion();
+    }
+    
+    if (approvedSubjects.includes(subjectId)) {
+        approvedSubjects = approvedSubjects.filter(id => id !== subjectId);
+        subjectEl.classList.remove('approved');
+    } else {
+        approvedSubjects.push(subjectId);
+        subjectEl.classList.add('approved');
+    }
+    
+    localStorage.setItem('approvedSubjects', JSON.stringify(approvedSubjects));
+    renderCurriculum();
+}
+    
+    // Actualizar contador
+    function updateCompletedCount() {
+        completedCountEl.textContent = approvedSubjects.length;
+    }
+    
+    // Reiniciar progreso
+    resetBtn.addEventListener('click', () => {
+        approvedSubjects = [];
+        localStorage.setItem('approvedSubjects', JSON.stringify(approvedSubjects));
+        renderCurriculum();
+    });
+    
+    // Renderizar inicialmente
+    renderCurriculum();
 });
+
+
+
+
+
