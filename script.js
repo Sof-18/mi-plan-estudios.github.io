@@ -33,7 +33,7 @@ document.addEventListener('DOMContentLoaded', function(){
                     subjects: [
                         { id: "analisis2", name: "Análisis Matemático II", credits: 5, requires: ["fisica1"] },
                         { id: "circuitos", name: "Introducción a los Circuitos Eléctricos", credits: 4, requires: ["quimica", "alg"] },
-                        { id: "probabilidad", name: "Probabilidad y Estadística", credits: 4, requires: [] },
+                        { id: "probabilidad", name: "Probabilidad y Estadística", credits: 4, requires: ["alg", "analisis1"] },
                         { id: "resistencia", name: "Estabilidad y Resistencia de Materiales", credits: 5, requires: ["sistemas-rep", "fisica1", "informatica"] }
                     ]
                 },
