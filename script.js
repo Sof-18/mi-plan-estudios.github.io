@@ -343,30 +343,34 @@ function checkFifthYearCompletion() {
     
     // Renderizar la tabla
     function renderCurriculum() {
-    const container = document.querySelector('.curriculum-columns');
+    const container = document.querySelector('.curriculum-vertical');
     container.innerHTML = '';
 
     curriculumData.forEach(yearData => {
-        // Crear columna para cada año
-        const yearColumn = document.createElement('div');
-        yearColumn.className = `year-column year-${yearData.year}`;
+        // Fila completa para cada año
+        const yearRow = document.createElement('div');
+        yearRow.className = `year-row year-${yearData.year}`;
         
         // Encabezado del año
         const yearHeader = document.createElement('div');
         yearHeader.className = 'year-header';
         yearHeader.textContent = yearData.name;
-        yearColumn.appendChild(yearHeader);
+        yearRow.appendChild(yearHeader);
         
-        // Contenedor para semestres
-        const semesterContainer = document.createElement('div');
-        semesterContainer.className = 'semester-container';
+        // Contenedor de semestres (se mostrarán como columnas)
+        const semestersContainer = document.createElement('div');
+        semestersContainer.className = 'semesters-container';
         
         yearData.semesters.forEach(semester => {
+            // Columna para cada semestre
+            const semesterColumn = document.createElement('div');
+            semesterColumn.className = 'semester-column';
+            
             // Encabezado del semestre
             const semesterHeader = document.createElement('div');
             semesterHeader.className = 'semester-header';
             semesterHeader.textContent = semester.name;
-            semesterContainer.appendChild(semesterHeader);
+            semesterColumn.appendChild(semesterHeader);
             
             // Materias
             semester.subjects.forEach(subject => {
@@ -374,12 +378,10 @@ function checkFifthYearCompletion() {
                 subjectEl.className = `subject year-${yearData.year}`;
                 subjectEl.dataset.id = subject.id;
                 
-                // Verificar si está aprobada
                 if (approvedSubjects.includes(subject.id)) {
                     subjectEl.classList.add('approved');
                 }
                 
-                // Verificar requisitos
                 const requirementsMet = subject.requires.every(req => {
                     if (req === 'all-fourth-year') return checkFourthYearCompletion(true);
                     if (req === 'all-fifth-year') return checkFifthYearCompletion(true);
@@ -396,12 +398,14 @@ function checkFifthYearCompletion() {
                 `;
                 
                 subjectEl.addEventListener('click', () => toggleApproval(subject.id));
-                semesterContainer.appendChild(subjectEl);
+                semesterColumn.appendChild(subjectEl);
             });
+            
+            semestersContainer.appendChild(semesterColumn);
         });
         
-        yearColumn.appendChild(semesterContainer);
-        container.appendChild(yearColumn);
+        yearRow.appendChild(semestersContainer);
+        container.appendChild(yearRow);
     });
     
     updateCompletedCount();
